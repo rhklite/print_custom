@@ -217,7 +217,7 @@ def mem_report():
         total_numel = 0
         total_mem = 0
         visited_data = []
-        for tensor in tensors:
+        for idx, tensor in enumerate(tensors):
             if tensor.is_sparse:
                 continue
             # a data_ptr indicates a memory block allocated
@@ -232,10 +232,7 @@ def mem_report():
             total_mem += mem
             element_type = type(tensor).__name__
             size = tuple(tensor.size())
-            print('%s\t\t%s\t\t%.2f' % (
-                element_type,
-                size,
-                mem))
+            print('{:3} {}\t\t{}\t\t{:.2f}'.format(idx, element_type, size, mem))
         print('-' * LEN)
         print('Total Tensors: %d \tUsed Memory Space: %.2f MBytes' %
               (total_numel, total_mem))
