@@ -158,7 +158,7 @@ def tensorListInfo(tensor_list, vname, usrmsg, leveloffset):
     devices = printList(dtype_different or devices_different, devices)
     shapes = str(printList(shapes_different, shapes))
     devices_dtypes = ' '.join(map(str, *zip(dtypes, devices)))
-    msg = colourString(colourString(getLineInfo(leveloffset + 1), Colours.UNDERLINE), Colours.OKBLUE) + ': [' + str(vname) + '] ' + '<list> len: %d' % len(
+    msg = colourString(colourString(getLineInfo(leveloffset + 1), Colours.UNDERLINE), Colours.OKBLUE) + ': [' + str(vname) + '] ' + ('<list>' if isinstance(tensor_list, list) else '<tuple>')+' len: %d' % len(
         tensor_list) + ' (' + colourString(devices_dtypes, Colours.WARNING) + ') -- ' + colourString('%s' % shapes, Colours.OKGREEN) + (' </list>' if isinstance(tensor_list, list) else ' </tuple>') + usrmsg
     return msg
 #
