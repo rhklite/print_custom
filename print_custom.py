@@ -232,8 +232,8 @@ def mem_report():
             total_mem += mem
             element_type = type(tensor).__name__
             size = tuple(tensor.size())
-            print('{:3} {}\t\t{}\t\t{:.2f}'.format(
-                idx, element_type, size, mem))
+            print('{:3} {}\t\t{}\t\t{:.2f}\t\t{}'.format(
+                idx, element_type, size, mem, tensor.grad_fn))
         print('-' * LEN)
         print('Total Tensors: %d \tUsed Memory Space: %.5f MBytes' %
               (total_numel, total_mem))
@@ -242,6 +242,7 @@ def mem_report():
         print('-' * LEN)
     LEN = 65
     print('=' * LEN)
+    gc.collect()
     objects = gc.get_objects()
     print('%s\t%s\t\t\t%s' % ('Element type', 'Size', 'Used MEM(MBytes)'))
     tensors = [obj for obj in objects if torch.is_tensor(obj)]
