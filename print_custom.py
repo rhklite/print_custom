@@ -138,7 +138,7 @@ def getDevice(t):
 
 
 def tensorListInfo(tensor_list, vname, usrmsg, leveloffset):
-    assert isinstance(tensor_list, list)
+    assert isinstance(tensor_list, list) or isinstance(tensor_list, tuple)
     str_ret = ''
     dtypes = [tensor_list[0].dtype]
     devices = [tensor_list[0].device]
@@ -159,7 +159,7 @@ def tensorListInfo(tensor_list, vname, usrmsg, leveloffset):
     shapes = str(printList(shapes_different, shapes))
     devices_dtypes = ' '.join(map(str, *zip(dtypes, devices)))
     msg = colourString(colourString(getLineInfo(leveloffset + 1), Colours.UNDERLINE), Colours.OKBLUE) + ': [' + str(vname) + '] ' + '<list> len: %d' % len(
-        tensor_list) + ' (' + colourString(devices_dtypes, Colours.WARNING) + ') -- ' + colourString('%s' % shapes, Colours.OKGREEN) + ' </list>' + usrmsg
+        tensor_list) + ' (' + colourString(devices_dtypes, Colours.WARNING) + ') -- ' + colourString('%s' % shapes, Colours.OKGREEN) + (' </list>' if isinstance(tensor_list, list) else ' </tuple>') + usrmsg
     return msg
 #
 # Print information about a tensor.
@@ -167,11 +167,11 @@ def tensorListInfo(tensor_list, vname, usrmsg, leveloffset):
 
 def printTensor(tensor, usrmsg='', leveloffset=0):
     vname = varname(tensor)
-    if isinstance(tensor, list):
+    if isinstance(tensor, list) or isinstance(tensor, tuple):
         msg = tensorListInfo(tensor, vname, usrmsg, leveloffset)
     elif isinstance(tensor, torch.Tensor):
-        msg = colourString(colourString(getLineInfo(leveloffset), Colours.UNDERLINE), Colours.OKBLUE) + ': [' + str(vname) + '] (' + colourString(str(
-            tensor.dtype) + ' ' + str(getDevice(tensor)), Colours.WARNING) + ') -- ' + colourString('%s' % str(tensor.shape), Colours.OKGREEN) + ' ' + usrmsg
+        msg = colourString(colourString(getLineInfo(leveloffset), Colours.UNDERLINE), Colours.OKBLUE) + ': [' + str(vname) + '] (' + colourString(
+            str(tensor.dtype) + ' ' + str(tensor.device), Colours.WARNING) + ') -- ' + colourString('%s' % str(tensor.shape), Colours.OKGREEN) + ' ' + colourString('%s' % str(tensor.grad_fn), Colours.OKGREEN)+' ' + usrmsg
     else:
         msg = colourString(colourString(getLineInfo(leveloffset), Colours.UNDERLINE), Colours.OKBLUE) + ': [' + str(vname) + '] (' + colourString(str(
             tensor.dtype) + ' ' + str(getDevice(tensor)), Colours.WARNING) + ') -- ' + colourString('%s' % str(tensor.shape), Colours.OKGREEN) + ' ' + usrmsg
@@ -232,9 +232,10 @@ def mem_report():
             total_mem += mem
             element_type = type(tensor).__name__
             size = tuple(tensor.size())
-            print('{:3} {}\t\t{}\t\t{:.2f}'.format(idx, element_type, size, mem))
+            print('{:3} {}\t\t{}\t\t{:.2f}'.format(
+                idx, element_type, size, mem))
         print('-' * LEN)
-        print('Total Tensors: %d \tUsed Memory Space: %.2f MBytes' %
+        print('Total Tensors: %d \tUsed Memory Space: %.5f MBytes' %
               (total_numel, total_mem))
         print('Torch report: %.2f MBytes' %
               (torch.cuda.memory_allocated() / (1024 ** 2)))
