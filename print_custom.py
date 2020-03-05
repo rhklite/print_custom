@@ -68,6 +68,9 @@ def printInfo(*umsg):
         if isinstance(mstr, torch.Tensor):
             vname = varname(mstr, 'printInfo')
             lst += '[' + str(vname) + ']\n'
+        elif not isinstance(mstr, str):
+            vname = varname(mstr, 'printInfo')
+            lst += '[' + str(vname) + '] '
         lst += str(mstr) + ' '
     msg = colourString(msg, Colours.OKGREEN) + lst
     print(msg)
