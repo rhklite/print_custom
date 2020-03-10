@@ -7,9 +7,14 @@ Date: Nov-18-2019
 
 import gc
 import re
-import torch
 import inspect
-#
+
+try:
+    import torch
+except:
+    print("Package torch was not found."
+          "Pytorch tensor related print functions will not be available.")
+          
 # Color terminal (https://stackoverflow.com/questions/287871/print-in-terminal-with-colors-using-python).
 
 
