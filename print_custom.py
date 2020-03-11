@@ -75,7 +75,7 @@ def printInfo(*umsg):
             lst += '[' + str(vname) + ']\n'
         elif not isinstance(mstr, str):
             vname = varname(mstr, 'printInfo')
-            lst += '[' + str(vname) + '] '
+            lst += '[' + str(vname) +' ' +str(type(mstr))+ '] '
         lst += str(mstr) + ' '
     msg = colourString(msg, Colours.OKGREEN) + lst
     print(msg)
