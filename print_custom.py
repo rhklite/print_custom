@@ -60,7 +60,7 @@ def colourString(msg, ctype):
 # Print something in color.
 
 
-def printColour(msg, ctype):
+def printColour(msg, ctype=Colours.OKGREEN):
     print(colourString(msg, ctype))
 #
 # Print information.
