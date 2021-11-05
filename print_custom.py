@@ -268,7 +268,7 @@ def timer(func):
         value = func(*args, **kwargs)
         end_time = time.time()      # 2
         run_time = end_time - start_time    # 3
-        db.printColour("Finished {} in {:.4f} secs".format(func.__name__, run_time))
+        printColour("Finished {} in {:.4f} secs".format(func.__name__, run_time))
         return value
     return wrapper_timer
 
@@ -279,8 +279,8 @@ def debug(func):
         args_repr = [repr(a) for a in args]                      # 1
         kwargs_repr = ["{}={}" for k, v in kwargs.items()]  # 2
         signature = ", ".join(args_repr + kwargs_repr)           # 3
-        db.printColour("Calling {}({})".format(func.__name__, signature))
+        printColour("Calling {}({})".format(func.__name__, signature))
         value = func(*args, **kwargs)
-        db.printColour("{} returned {}".format(func.__name__, value))           # 4
+        printColour("{} returned {}".format(func.__name__, value))           # 4
         return value
     return wrapper_debug
