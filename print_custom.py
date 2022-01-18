@@ -73,10 +73,10 @@ def printInfo(*umsg):
     lst = ''
     for mstr in umsg:
         if isinstance(mstr, torch.Tensor):
-            vname = varname(mstr, 'printInfo')
+            vname = varname(mstr)
             lst += '[' + str(vname) + ']\n'
         elif not isinstance(mstr, str):
-            vname = varname(mstr, 'printInfo')
+            vname = varname(mstr)
             lst += '[' + str(vname) +' ' +str(type(mstr))+ '] '
         lst += str(mstr) + ' '
     msg = colourString(msg, Colours.OKGREEN) + lst
@@ -114,15 +114,17 @@ def printWarn(*warnstr):
 # Get name of variable passed to the function
 
 
-def varname(p, ss='printTensor'):
-    level = 2 + 0
-    frame = inspect.stack()[level][0]
-    for line in inspect.getframeinfo(frame).code_context:
-        m = re.search(r'\b%s\s*\(\s*(.*)\s*\)' % ss, line)
-        if m:
-            return m.group(1)
-#
-#
+def varname(var):
+    """
+    Gets the name of var. Does it from the out most frame inner-wards.
+    :param var: variable to get name from.
+    :return: string
+    """
+    for fi in reversed(inspect.stack()):
+        names = [var_name for var_name, var_val in fi.frame.f_locals.items() if var_val is var]
+        if len(names) > 0:
+            return names[0]
+
 
 
 def printList(is_different, dlist):
