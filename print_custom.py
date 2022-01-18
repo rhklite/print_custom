@@ -8,10 +8,12 @@ Date: Nov-18-2019
 import gc
 import re
 import inspect
+import time
+import functools
 
 try:
     import torch
-except:
+except ModuleNotFoundError:
     print("Package torch was not found."
           "Pytorch tensor related print functions will not be available.")
           
