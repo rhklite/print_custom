@@ -1,7 +1,7 @@
 """
 File Description: custom print utilities for debug
 Project: python
-Author: Daniel Dworakowski
+Author: Daniel Dworakowski, Han Hu
 Date: Nov-18-2019
 """
 import gc
